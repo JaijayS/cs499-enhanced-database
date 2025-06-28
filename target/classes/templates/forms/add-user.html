@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add User - DriverPass</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body {
+            background-color: #1c1c1c;
+            color: #f8f9fa;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .form-container {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: #2c2c2c;
+            padding: 30px;
+            border-radius: 12px;
+        }
+
+        .btn-save {
+            background-color: #28a745;
+            border: none;
+        }
+
+        .btn-save:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="form-container">
+    <h3 class="text-center mb-4">Add New User</h3>
+    <form th:action="@{/admin/add-user}" th:object="${user}" method="post">
+        <div class="mb-3">
+            <label>First Name</label>
+            <input type="text" class="form-control" th:field="*{firstName}" required />
+        </div>
+
+        <div class="mb-3">
+            <label>Last Name</label>
+            <input type="text" class="form-control" th:field="*{lastName}" required />
+        </div>
+
+        <div class="mb-3">
+            <label>Email</label>
+            <input type="email" class="form-control" th:field="*{email}" required />
+        </div>
+
+        <div class="mb-3">
+            <label>Password</label>
+            <input type="password" class="form-control" th:field="*{password}" required />
+        </div>
+
+        <div class="mb-3">
+            <label>Role</label>
+            <select class="form-select" th:field="*{role}">
+                <option value="ROLE_STUDENT">Student</option>
+                <option value="ROLE_TEACHER">Teacher</option>
+                <option value="ROLE_ADMIN">Admin</option>
+            </select>
+        </div>
+
+        <div class="d-grid">
+            <button type="submit" class="btn btn-save">Create User</button>
+        </div>
+    </form>
+</div>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

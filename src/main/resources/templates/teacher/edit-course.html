@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Course</title>
+    <style>
+        html, body { height: 100%; margin: 0; }
+        body {
+            display: flex;
+            flex-direction: column;
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        main { flex: 1; }
+        .form-container {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            max-width: 600px;
+            margin: 2rem auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        .btn-success { background-color: #198754; border: none; }
+        .btn-success:hover { background-color: #157347; }
+        label { font-weight: 500; }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main>
+    <div class="form-container">
+        <h2 class="mb-4">Edit Course</h2>
+        <form th:action="@{'/teacher/edit-course/' + ${course.courseId}}" th:object="${course}" method="post">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" th:field="*{title}" class="form-control" id="title" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea th:field="*{description}" class="form-control" id="description" rows="3"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="durationHours" class="form-label">Duration (hours)</label>
+                <input type="number" th:field="*{durationHours}" class="form-control" id="durationHours">
+            </div>
+            <div class="mb-3">
+                <label for="nextAppointment" class="form-label">Next Appointment</label>
+                <input type="date" th:field="*{nextAppointment}" class="form-control" id="nextAppointment">
+            </div>
+            <button type="submit" class="btn btn-success">Update Course</button>
+            <a th:href="@{/teacher/home}" class="btn btn-secondary me-2">Back</a>
+        </form>
+    </div>
+</main>
+</body>
+</html>

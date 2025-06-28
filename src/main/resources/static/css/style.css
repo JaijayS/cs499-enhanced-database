@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap');
+
+.custom-font {
+    font-family: 'Orbitron', sans-serif;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+.background-color {
+    background-color: #2a2a2a;
+
+    form {
+        background: rgba(255, 255, 255, 0.85);
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-hover {
+        transition: color 0.2s ease-in-out, border-bottom 0.2s ease-in-out;
+    }
+
+    .nav-hover:hover {
+        color: #ff6600;
+        border-bottom: 2px solid #ff6600;
+        text-decoration: none;
+    }
+
+    .text-orange {
+        color: #ff6600 !important;
+    }
+
+    .text-orange:hover {
+        color: #cc5200 !important;
+    }
+
+    .footer-link {
+        color: #000;
+        text-decoration: none;
+        transition: color 0.2s ease-in-out, border-bottom 0.2s ease-in-out;
+    }
+
+    .footer-link:hover {
+        color: #ff6600;
+        border-bottom: 1px solid #ff6600;
+    }
+
+    .underline-red {
+        text-decoration: underline;
+        text-decoration-color: red;
+    }
+
+    .underline-black {
+        text-decoration: underline;
+        text-decoration-color: black;
+    }
+
+    .underline-orange {
+        text-decoration: underline;
+        text-decoration-color: orange;
+    }
+
+    .btn-green {
+        background-color: #28a745;
+        color: white;
+        border: none;
+    }
+
+    .btn-green:hover {
+        background-color: #218838;
+    }
+
+}

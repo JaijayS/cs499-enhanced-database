@@ -1,0 +1,75 @@
+<!-- src/main/resources/templates/admin/home.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mt-4">
+    <h2 th:if="${admin != null}" th:text="'Welcome, ' + ${admin.firstName}">Welcome Admin</h2>
+    <h2 th:if="${admin == null}">Welcome, Admin</h2>
+
+    <div class="card mt-4 p-3">
+        <h4>Users</h4>
+        <table class="table table-striped">
+            <thead>
+            <tr><th>ID</th><th>Email</th><th>First Name</th><th>Last Name</th><th>Role</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${allUsers}">
+                <td th:text="${user.id}">1</td>
+                <td th:text="${user.email}">email@example.com</td>
+                <td th:text="${user.firstName}">First</td>
+                <td th:text="${user.lastName}">Last</td>
+                <td th:text="${user.role}">ROLE</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card mt-4 p-3">
+        <h4>Courses</h4>
+        <table class="table table-striped">
+            <thead>
+            <tr><th>ID</th><th>Name</th><th>Description</th><th>Teacher</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="course : ${allCourses}">
+                <td th:text="${course.id}">1</td>
+                <td th:text="${course.name}">Course Name</td>
+                <td th:text="${course.description}">Desc</td>
+                <td th:text="${course.teacher != null ? course.teacher.firstName : 'Unassigned'}">Teacher</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card mt-4 p-3 mb-5">
+        <h4>Vehicles</h4>
+        <table class="table table-striped">
+            <thead>
+            <tr><th>ID</th><th>Make</th><th>Model</th><th>Plate</th><th>Assigned To</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="vehicle : ${allVehicles}">
+                <td th:text="${vehicle.id}">1</td>
+                <td th:text="${vehicle.make}">Make</td>
+                <td th:text="${vehicle.model}">Model</td>
+                <td th:text="${vehicle.plateNumber}">Plate</td>
+                <td th:text="${vehicle.assignedToName}">None</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
+</div>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

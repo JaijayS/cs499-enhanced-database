@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Appointments - DriverPass</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            background-color: #1c1c1c;
+            color: #f8f9fa;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        table {
+            background-color: #2c2c2c;
+            color: white;
+            border-radius: 10px;
+        }
+
+        h2 {
+            margin-top: 30px;
+        }
+
+        .container {
+            margin-bottom: 60px;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mt-4">
+    <h2 class="text-center">Scheduled Appointments</h2>
+
+    <table class="table table-bordered mt-4">
+        <thead>
+        <tr>
+            <th>Student</th>
+            <th>Course</th>
+            <th>Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="appt : ${appointments}">
+            <td th:text="${appt.student.firstName + ' ' + appt.student.lastName}">Student Name</td>
+            <td th:text="${appt.course.name}">Course Name</td>
+            <td th:text="${#temporals.format(appt.time, 'MMM d, yyyy HH:mm')}">Date</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:if="${#lists.isEmpty(appointments)}" class="text-center mt-4">
+        <p>No appointments scheduled yet.</p>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>
