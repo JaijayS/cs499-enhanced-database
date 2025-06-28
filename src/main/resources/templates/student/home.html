@@ -1,46 +1,97 @@
-<!-- src/main/resources/templates/student/home.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Student Dashboard</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
 <div class="container mt-4">
-    <h2 th:text="'Welcome, ' + ${student.firstName}">Welcome, Student</h2>
+    <h2 th:text="'Welcome, ' + ${student.firstName}">Welcome</h2>
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-    <!-- Enrolled Courses -->
-    <h4 class="mt-4">Your Courses</h4>
-    <div th:each="course : ${enrolledCourses}" class="card mt-3 p-3">
-        <h5 th:text="${course.name}">Course Name</h5>
-        <p th:text="${course.description}">Description</p>
-        <form th:action="@{/courses/unenroll}" method="post">
-            <input type="hidden" name="courseId" th:value="${course.id}" />
-            <input type="hidden" name="studentId" th:value="${student.id}" />
-            <button class="btn btn-warning btn-sm">Unenroll</button>
-        </form>
+    <!-- ENROLLED COURSES -->
+    <div class="card mt-4 p-3">
+        <h4>Enrolled Courses</h4>
+        <table class="table table-bordered">
+            <thead><tr><th>Course</th><th>Description</th><th>Teacher</th></tr></thead>
+            <tbody>
+            <tr th:each="course : ${enrolledCourses}">
+                <td th:text="${course.name}">Course</td>
+                <td th:text="${course.description}">Description</td>
+                <td th:text="${course.teacher != null ? course.teacher.firstName + ' ' + course.teacher.lastName : 'N/A'}">Teacher</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 
-    <!-- Available Courses -->
-    <h4 class="mt-5">Available Courses</h4>
-    <div th:each="course : ${availableCourses}" class="card mt-3 p-3">
-        <h5 th:text="${course.name}">Course Name</h5>
-        <p th:text="${course.description}">Description</p>
-        <form th:action="@{/courses/enroll}" method="post">
-            <input type="hidden" name="courseId" th:value="${course.id}" />
-            <input type="hidden" name="studentId" th:value="${student.id}" />
-            <button class="btn btn-success btn-sm">Enroll</button>
-        </form>
+    <!-- AVAILABLE COURSES -->
+    <div class="card mt-4 p-3">
+        <h4>Available Courses</h4>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Course</th>
+                <th>Description</th>
+                <th>Teacher</th>
+                <th>Pick Date & Enroll</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="course : ${availableCourses}">
+                <td th:text="${course.name}">Name</td>
+                <td th:text="${course.description}">Desc</td>
+                <td th:text="${course.teacher != null ? course.teacher.firstName + ' ' + course.teacher.lastName : 'N/A'}">Teacher</td>
+                <td>
+                    <form th:action="@{'/student/schedule/' + ${course.id}}" method="post">
+                        <input type="date" name="appointmentDate" required>
+                        <button type="submit" class="btn btn-primary">Schedule</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 
-    <div class="mt-3">
-        <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
+    <!--  COMPLETED COURSES SECTION -->
+    <div class="card mt-4 p-3">
+        <h4>Completed Courses</h4>
+        <table class="table table-bordered">
+            <thead><tr><th>Course</th><th>Status</th></tr></thead>
+            <tbody>
+            <tr th:each="outcome : ${completedCourses}">
+                <td th:text="${outcome.course.name}">Course</td>
+                <td th:text="${outcome.passed ? 'Passed' : 'Failed'}">Status</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
+
+        </table>
+    </div>
+
+    <a th:href="@{/logout}" class="btn btn-danger mt-4">Logout</a>
 </div>
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
+<script>
+    // Validate datetime-local to only allow weekdays
+    document.querySelectorAll('input[type="datetime-local"]').forEach(input => {
+        input.addEventListener('change', function () {
+            const selectedDate = new Date(this.value);
+            // 0 = Sunday, 6 = Saturday
+            const day = selectedDate.getDay();
+
+            if (day === 0 || day === 6) {
+                alert("Please select a weekday (Monday through Friday).");
+                this.value = '';
+            }
+        });
+    });
+</script>
 </body>
 </html>

@@ -16,6 +16,7 @@ public class VehicleController {
     private final VehicleRepository vehicleRepo;
     private final UserRepository userRepo;
 
+    // Display all vehicles
     @GetMapping
     public String showVehicles(Model model) {
         model.addAttribute("vehicles",
@@ -24,6 +25,7 @@ public class VehicleController {
         return "admin/vehicles";
     }
 
+    // Add a new vehicle
     @PostMapping("/edit")
     public String editVehicle(@ModelAttribute VehicleDTO dto) {
         vehicleRepo.save(dto.toEntity(userRepo));

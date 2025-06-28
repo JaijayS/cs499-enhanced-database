@@ -1,9 +1,10 @@
+// src/main/java/com/example/DriverPass/model/CourseOutcome.java
 package com.example.DriverPass.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDateTime;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Getter
@@ -11,22 +12,20 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
-public class Appointment {
+public class CourseOutcome {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime time;
-
     @ManyToOne
     private User student;
 
     @ManyToOne
+    @JoinColumn(name = "course_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Course course;
 
-    @ManyToOne
-    @JoinColumn(name = "teacher_id")
-    private User teacher;
+    private boolean passed;
+
 }

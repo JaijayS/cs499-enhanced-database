@@ -27,7 +27,7 @@ public class User {
     @ManyToMany
     private Set<Course> courses;
 
-    // ✅ Custom constructor for seeding
+    //  Custom constructor for seeding
     public User(String email, String password, String firstName, String lastName, Role role) {
         this.email = email;
         this.password = password;

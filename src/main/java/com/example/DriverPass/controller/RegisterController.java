@@ -2,10 +2,14 @@ package com.example.DriverPass.controller;
 
 import com.example.DriverPass.model.Role;
 import com.example.DriverPass.model.User;
+import com.example.DriverPass.security.CustomUserDetailsService;
 import com.example.DriverPass.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +22,7 @@ public class RegisterController {
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final CustomUserDetailsService userDetailsService;
 
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
@@ -31,7 +36,6 @@ public class RegisterController {
                                HttpSession session,
                                Model model) {
 
-        // Check for existing email
         if (userService.getByEmail(user.getEmail()).isPresent()) {
             result.rejectValue("email", "error.user", "Email already registered.");
         }
@@ -40,12 +44,17 @@ public class RegisterController {
             return "register";
         }
 
-        // Set role and encode password
         user.setRole(Role.ROLE_STUDENT);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.save(user);
 
+        // Auto-login after registration
+        UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
+        UsernamePasswordAuthenticationToken authToken =
+                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authToken);
         session.setAttribute("user", user);
-        return "redirect:/student/home"; // redirect to student dashboard
+
+        return "redirect:/student/home";
     }
 }

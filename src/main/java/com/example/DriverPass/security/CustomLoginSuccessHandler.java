@@ -19,6 +19,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final UserRepository userRepo;
 
+    // This class handles the logic after a successful login
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
@@ -26,10 +27,12 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
         String email = authentication.getName(); // email = username
         Optional<User> optionalUser = userRepo.findByEmail(email);
 
+        // If user is found, set it in the session and redirect based on role
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             request.getSession().setAttribute("user", user);
 
+            // Redirect based on user role
             String role = user.getRole().name();
             if ("ROLE_ADMIN".equals(role)) {
                 response.sendRedirect("/admin/home");

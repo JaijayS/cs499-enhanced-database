@@ -17,6 +17,7 @@ public class VehicleDTO {
     private boolean checkedOut;
     private String assignedToName;
 
+    // Converts a Vehicle entity to a VehicleDTO
     public static VehicleDTO fromEntity(Vehicle vehicle) {
         return VehicleDTO.builder()
                 .id(vehicle.getId())
@@ -31,6 +32,7 @@ public class VehicleDTO {
                 )
                 .build();
     }
+    // Converts a VehicleDTO to a Vehicle entity
     public Vehicle toEntity(UserRepository userRepo) {
         Vehicle vehicle = new Vehicle();
         vehicle.setId(this.id);

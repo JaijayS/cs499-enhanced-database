@@ -32,9 +32,10 @@ public class Course {
     @JoinTable(
             name = "course_students",
             joinColumns = @JoinColumn(name = "course_id"),
-            inverseJoinColumns = @JoinColumn(name = "student_id")  // <-- FIXED HERE
+            inverseJoinColumns = @JoinColumn(name = "student_id")
     )
     private Set<User> students = new HashSet<>();
+
     // One course gets one vehicle
     @OneToOne
     private Vehicle vehicle;

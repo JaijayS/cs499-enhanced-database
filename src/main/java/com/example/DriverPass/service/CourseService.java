@@ -4,6 +4,7 @@ import com.example.DriverPass.model.Course;
 import com.example.DriverPass.model.User;
 import com.example.DriverPass.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,15 +56,22 @@ public class CourseService {
         return false;
     }
 
+    // Find all courses a student is enrolled in
     public List<Course> findCoursesByStudent(User student) {
         return courseRepo.findAll().stream()
                 .filter(course -> course.getStudents().contains(student))
                 .collect(Collectors.toList());
     }
 
+    // Find all courses a student is not enrolled in and has not completed
+    @Autowired
+    private CourseOutcomeService outcomeService;
+
+    // This method returns all courses that a student is not enrolled in and has not completed
     public List<Course> findCoursesNotEnrolledByStudent(User student) {
         return courseRepo.findAll().stream()
                 .filter(course -> !course.getStudents().contains(student))
+                .filter(course -> !outcomeService.hasCompletedCourse(student, course))
                 .collect(Collectors.toList());
     }
 }

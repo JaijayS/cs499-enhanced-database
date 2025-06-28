@@ -11,20 +11,26 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VehicleService {
 
+    // Service class for managing vehicles
     private final VehicleRepository vehicleRepo;
 
+    // Retrieve all vehicles from the repository
     public List<Vehicle> getAll() {
         return vehicleRepo.findAll();
     }
 
+    // Retrieve a vehicle by its ID
     public Vehicle getVehicleById(Long id) {
         return vehicleRepo.findById(id).orElse(null);
     }
 
+    // Save a vehicle to the repository
     public void save(Vehicle vehicle) {
         vehicleRepo.save(vehicle);
     }
 
+
+    // Delete a vehicle by its ID
     public void deleteById(Long id) {
         vehicleRepo.deleteById(id);
     }

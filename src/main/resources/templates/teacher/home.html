@@ -1,10 +1,10 @@
-<!-- src/main/resources/templates/teacher/home.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Teacher Dashboard</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
@@ -12,44 +12,36 @@
 <div class="container mt-4">
     <h2 th:text="'Welcome, ' + ${teacher.firstName}">Welcome, Teacher</h2>
 
-    <!-- Courses and Students -->
-    <h4 class="mt-4">My Courses</h4>
-    <div th:each="course : ${courses}" class="card mt-3 p-3">
-        <h5 th:text="${course.name}">Course Name</h5>
-        <p th:text="${course.description}">Description</p>
-        <strong>Students:</strong>
-        <ul>
-            <li th:each="student : ${course.students}" th:text="${student.firstName + ' ' + student.lastName}">Student</li>
-        </ul>
+    <!-- Courses -->
+    <div th:each="course : ${courses}" class="card mt-4 p-3">
+        <h4 th:text="${course.name}">Course Name</h4>
+        <p><strong>Description:</strong> <span th:text="${course.description}">Desc</span></p>
+
+        <!-- Students -->
+        <div th:if="${#lists.isEmpty(course.students)}">
+            <p>No students enrolled.</p>
+        </div>
+        <div th:if="${!#lists.isEmpty(course.students)}">
+            <table class="table table-bordered mt-3">
+                <thead><tr><th>Student</th><th>Email</th><th>Mark Completed</th></tr></thead>
+                <tbody>
+                <tr th:each="student : ${course.students}">
+                    <td th:text="${student.firstName + ' ' + student.lastName}">Student Name</td>
+                    <td th:text="${student.email}">email</td>
+                    <td>
+                        <form th:action="@{/teacher/complete}" method="post">
+                            <input type="hidden" name="studentId" th:value="${student.id}"/>
+                            <input type="hidden" name="courseId" th:value="${course.id}"/>
+                            <button class="btn btn-success btn-sm">Mark Complete</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <!-- Appointments -->
-    <h4 class="mt-5">Appointments</h4>
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>Student</th>
-            <th>Time</th>
-            <th>Type</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="appt : ${appointments}">
-            <td th:text="${appt.student != null ? appt.student.firstName + ' ' + appt.student.lastName : 'N/A'}">Student</td>
-            <td th:text="${#temporals.format(appt.time, 'yyyy-MM-dd HH:mm')}">Time</td>
-            <td th:text="${appt.type}">Type</td>
-        </tr>
-        </tbody>
-    </table>
-
-    <!-- Vehicle Checkout -->
-    <div class="mt-4">
-        <a th:href="@{/teacher/checkout-vehicle}" class="btn btn-primary">Check Out Vehicle</a>
-    </div>
-
-    <div class="mt-3">
-        <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
-    </div>
+    <a th:href="@{/logout}" class="btn btn-danger mt-4">Logout</a>
 </div>
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
